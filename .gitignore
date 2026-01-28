@@ -1,0 +1,19 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+/out/
+
+# Maven
+/target/
+/.mvn/wrapper/maven-wrapper.jar
+
+# Entorno local
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
