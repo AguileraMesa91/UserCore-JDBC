@@ -1,4 +1,4 @@
-CREATE SCHEMA `user_core_db` ;
+CREATE SCHEMA `user_core_db`;
 
 CREATE TABLE `user_core_db`.`users` (
   `id_user` INT NOT NULL AUTO_INCREMENT,
