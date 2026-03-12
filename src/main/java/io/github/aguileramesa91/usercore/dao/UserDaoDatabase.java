@@ -5,6 +5,7 @@ import io.github.aguileramesa91.usercore.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class UserDaoDatabase implements UserDao{
             declaration.setInt(4, user.getAge());
 
             declaration.executeUpdate();
-            System.out.println("User added succeddfully!");
+            System.out.println("User added successfully!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -29,6 +30,25 @@ public class UserDaoDatabase implements UserDao{
 
     @Override
     public User findById(Long id) {
+        String sql = "SELECT * FROM users WHERE id_user = ?";
+        try(Connection connection = DatabaseConfig.getConnection();
+            PreparedStatement declaration =  connection.prepareStatement(sql))
+        {
+            declaration.setLong(1, id);
+            ResultSet result = declaration.executeQuery();
+            if(result.next()){
+                User user = new User();
+                user.setIdUser(result.getLong("id_user"));
+                user.setName(result.getString("name"));
+                user.setLastName(result.getString("last_name"));
+                user.setEmail(result.getString("email"));
+                user.setAge(result.getInt("age"));
+                return user;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
