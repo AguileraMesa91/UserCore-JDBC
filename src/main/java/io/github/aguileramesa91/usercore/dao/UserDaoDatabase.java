@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoDatabase implements UserDao{
@@ -54,7 +55,25 @@ public class UserDaoDatabase implements UserDao{
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        List<User> userList = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try(Connection connection = DatabaseConfig.getConnection();
+            PreparedStatement declaration = connection.prepareStatement(sql))
+        {
+            ResultSet result = declaration.executeQuery();
+            while (result.next()){
+                User user = new User();
+                user.setIdUser(result.getLong("id_user"));
+                user.setName(result.getString("name"));
+                user.setLastName(result.getString("last_name"));
+                user.setEmail(result.getString("email"));
+                user.setAge(result.getInt("age"));
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return userList;
     }
 
     @Override

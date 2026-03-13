@@ -16,9 +16,17 @@ public class Main {
         user1.setLastName("Williams");
         user1.setEmail("jwill@test.com");
         user1.setAge(19);
+        User user2 = new User();
+        user2.setName("Michael");
+        user2.setLastName("Carter");
+        user2.setEmail("michael.carter@test.com");
+        user2.setAge(27);
 
         try{
-            userDao.addUser(user1);
+            //userDao.addUser(user2);
+            System.out.println(userDao.findById(1L));
+            System.out.println(userDao.findAll());
+
         } catch (RuntimeException e) {
             System.out.println("Error saving user: " + e.getMessage());
         }
