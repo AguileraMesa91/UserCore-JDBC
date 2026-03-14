@@ -80,7 +80,8 @@ public class UserDaoDatabase implements UserDao{
     public void updateUser(User user) {
         String sql = "UPDATE users SET name = ?, last_name = ?, email = ?, age = ? WHERE id_user = ?";
         try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement declaration = connection.prepareStatement(sql)) {
+             PreparedStatement declaration = connection.prepareStatement(sql))
+        {
             declaration.setString(1, user.getName());
             declaration.setString(2, user.getLastName());
             declaration.setString(3, user.getEmail());
@@ -95,6 +96,14 @@ public class UserDaoDatabase implements UserDao{
     }
     @Override
     public void deleteUser(Long id) {
-
+        String sql = "Delete From users WHERE id_user = ?";
+        try (Connection connection = DatabaseConfig.getConnection();
+             PreparedStatement declaration = connection.prepareStatement(sql))
+        {
+            declaration.setLong(1, id);
+            declaration.executeUpdate();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 }
