@@ -4,17 +4,15 @@ import io.github.aguileramesa91.usercore.config.DatabaseConfig;
 import io.github.aguileramesa91.usercore.dao.UserDao;
 import io.github.aguileramesa91.usercore.dao.UserDaoDatabase;
 import io.github.aguileramesa91.usercore.model.User;
+import io.github.aguileramesa91.usercore.service.UserService;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        //UserDao user = new UserDaoDatabase();
+        UserService userService = new UserService();
         Scanner sc = new Scanner(System.in);
         boolean exist = false;
-        UserDao user = new UserDaoDatabase();
 
         System.out.println("========= Welcome to control panel =========");
         while (!exist){
@@ -48,7 +46,7 @@ public class Main {
                         newUser.setAge(sc.nextInt());
                         sc.nextLine();
 
-                        user.addUser(newUser);
+                        userService.registerUser(newUser);
                     } catch (RuntimeException e){
                         System.err.println("Database Error: could not save the user. " + e.getMessage());
                     }
@@ -57,7 +55,7 @@ public class Main {
                     try{
                         System.out.println("Enter the ID to find:");
                         Long id = sc.nextLong();
-                        User found = user.findById(id);
+                        User found = userService.getUserById(id);
                         System.out.println(found != null ? found: "User not found.");
                     } catch (RuntimeException e){
                         System.err.println("Database Error: could not retrieve data. " + e.getMessage());
@@ -67,9 +65,9 @@ public class Main {
                 case 3:
                     try {
                         System.out.println("--- All users ---");
-                        user.findAll().forEach(System.out::println);
+                        userService.getAllUsers().forEach(System.out::println);
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: " + e.getMessage());
+                        System.err.println("Database Error: could no fetch the user list. " + e.getMessage());
                     }
                     break;
                 case 4:
@@ -78,7 +76,7 @@ public class Main {
                         Long updateId = sc.nextLong();
                         sc.nextLine();
 
-                        User userToUpdate = user.findById(updateId);
+                        User userToUpdate = userService.getUserById(updateId);
                         if(userToUpdate != null){
                             System.out.println("User found: " + userToUpdate.getName() + ", " + userToUpdate.getLastName() +
                                     ", " + userToUpdate.getEmail() + ", " + userToUpdate.getAge()) ;
@@ -91,12 +89,12 @@ public class Main {
                             System.out.println("Enter new age: ");
                             userToUpdate.setAge(sc.nextInt());
                             sc.nextLine();
-                            
-                            user.updateUser(userToUpdate);
+
+                            userService.updateUser(userToUpdate);
                             System.out.println("User updated successfully!");
                         }
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: " + e.getMessage());
+                        System.err.println("Database Error: the user could not be update. " + e.getMessage());
                     }
                     break;
                 case 5:
@@ -105,16 +103,16 @@ public class Main {
                         Long deleteId = sc.nextLong();
                         sc.nextLine();
 
-                        User userToDelete = user.findById(deleteId);
+                        User userToDelete = userService.getUserById(deleteId);
                         if(userToDelete != null){
                             System.out.println("User to delete found: " + userToDelete.getName());
-                            user.deleteUser(deleteId);
+                            userService.deleteUser(deleteId);
                             System.out.println("User deleted successfully!");
                         }else{
                             System.out.println("Error: Cannot delete. User not found");
                         }
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: " + e.getMessage());
+                        System.err.println("Database Error: the user could not be delete. " + e.getMessage());
                     }
                     break;
                 case 6:
