@@ -1,10 +1,8 @@
 package io.github.aguileramesa91.usercore;
 
-import io.github.aguileramesa91.usercore.config.DatabaseConfig;
-import io.github.aguileramesa91.usercore.dao.UserDao;
-import io.github.aguileramesa91.usercore.dao.UserDaoDatabase;
 import io.github.aguileramesa91.usercore.model.User;
 import io.github.aguileramesa91.usercore.service.UserService;
+import io.github.aguileramesa91.usercore.util.TimeLogger;
 
 import java.util.Scanner;
 
@@ -46,7 +44,9 @@ public class Main {
                         newUser.setAge(sc.nextInt());
                         sc.nextLine();
 
+                        long startTime = System.currentTimeMillis();
                         userService.registerUser(newUser);
+                        TimeLogger.logExecutionTime("AddUsers", startTime);
                     } catch (RuntimeException e){
                         System.err.println("Database Error: could not save the user. " + e.getMessage());
                     }
@@ -55,8 +55,10 @@ public class Main {
                     try{
                         System.out.println("Enter the ID to find:");
                         Long id = sc.nextLong();
+                        long startTime = System.currentTimeMillis();
                         User found = userService.getUserById(id);
                         System.out.println(found != null ? found: "User not found.");
+                        TimeLogger.logExecutionTime("FindUserByID", startTime);
                     } catch (RuntimeException e){
                         System.err.println("Database Error: could not retrieve data. " + e.getMessage());
                     }
@@ -65,7 +67,9 @@ public class Main {
                 case 3:
                     try {
                         System.out.println("--- All users ---");
+                        long startTime = System.currentTimeMillis();
                         userService.getAllUsers().forEach(System.out::println);
+                        TimeLogger.logExecutionTime("GetAllUsers", startTime);
                     } catch (RuntimeException e){
                         System.err.println("Database Error: could no fetch the user list. " + e.getMessage());
                     }
@@ -90,8 +94,10 @@ public class Main {
                             userToUpdate.setAge(sc.nextInt());
                             sc.nextLine();
 
+                            long startTime = System.currentTimeMillis();
                             userService.updateUser(userToUpdate);
                             System.out.println("User updated successfully!");
+                            TimeLogger.logExecutionTime("UpdateUser", startTime);
                         }
                     } catch (RuntimeException e){
                         System.err.println("Database Error: the user could not be update. " + e.getMessage());
@@ -103,14 +109,18 @@ public class Main {
                         Long deleteId = sc.nextLong();
                         sc.nextLine();
 
+
                         User userToDelete = userService.getUserById(deleteId);
                         if(userToDelete != null){
                             System.out.println("User to delete found: " + userToDelete.getName());
+                            long startTime = System.currentTimeMillis();
                             userService.deleteUser(deleteId);
+                            TimeLogger.logExecutionTime("DeletedUser", startTime);
                             System.out.println("User deleted successfully!");
                         }else{
                             System.out.println("Error: Cannot delete. User not found");
                         }
+
                     } catch (RuntimeException e){
                         System.err.println("Database Error: the user could not be delete. " + e.getMessage());
                     }
