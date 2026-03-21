@@ -12,8 +12,10 @@
 .env
 
 # Logs
+execution_logs.txt
 *.log
 
 # OS
 .DS_Store
 Thumbs.db
+
