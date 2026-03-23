@@ -46,9 +46,10 @@ public class Main {
 
                         long startTime = System.currentTimeMillis();
                         userService.registerUser(newUser);
-                        TimeLogger.logExecutionTime("AddUsers", startTime);
+                        TimeLogger.logExecutionTime("AddUsers ", startTime);
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: could not save the user. " + e.getMessage());
+                        TimeLogger.logError("AddUser", e.getMessage());
+                        System.err.println("Process stopped: " + e.getMessage());
                     }
                     break;
                 case 2:
@@ -60,7 +61,8 @@ public class Main {
                         System.out.println(found != null ? found: "User not found.");
                         TimeLogger.logExecutionTime("FindUserByID", startTime);
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: could not retrieve data. " + e.getMessage());
+                        TimeLogger.logError("FindUserByID", e.getMessage());
+                        System.err.println("Error: could not retrieve data. " + e.getMessage());
                     }
 
                     break;
@@ -71,7 +73,8 @@ public class Main {
                         userService.getAllUsers().forEach(System.out::println);
                         TimeLogger.logExecutionTime("GetAllUsers", startTime);
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: could no fetch the user list. " + e.getMessage());
+                        TimeLogger.logError("GetAllUser", e.getMessage());
+                        System.err.println("Error: could no fetch the user list. " + e.getMessage());
                     }
                     break;
                 case 4:
@@ -100,7 +103,8 @@ public class Main {
                             TimeLogger.logExecutionTime("UpdateUser", startTime);
                         }
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: the user could not be update. " + e.getMessage());
+                        TimeLogger.logError("UpdateUser", e.getMessage());
+                        System.err.println("Error: the user could not be update. " + e.getMessage());
                     }
                     break;
                 case 5:
@@ -122,7 +126,8 @@ public class Main {
                         }
 
                     } catch (RuntimeException e){
-                        System.err.println("Database Error: the user could not be delete. " + e.getMessage());
+                        TimeLogger.logError("DeleteUser", e.getMessage());
+                        System.err.println("Error: deletion fail. " + e.getMessage());
                     }
                     break;
                 case 6:

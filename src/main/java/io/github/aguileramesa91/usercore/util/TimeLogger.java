@@ -19,7 +19,7 @@ public class TimeLogger {
         String timestamp = LocalDateTime.now().format(formatter);
 
         String logMessage = String.format("[%s] OPERATION: %s | DURATION: %d ms",
-                timestamp, operation, duration);
+                                          timestamp, operation, duration);
         System.out.println("\u001B[36m" + logMessage + "\u001B[0m");
 
         try (FileWriter fw = new FileWriter((FILE_NAME), true);
@@ -28,6 +28,21 @@ public class TimeLogger {
             out.println(logMessage);
         } catch (IOException e) {
             System.err.println("Error writing to log file: " + e.getMessage());
+        }
+    }
+
+    public static void logError(String operation, String errorMessage) {
+        String timestamp = LocalDateTime.now().format(formatter);
+        String logMessage = String.format("[%s] ERROR in %s | MESSAGE: %s",
+                                          timestamp, operation, errorMessage);
+        System.err.println(logMessage);
+
+        try (FileWriter fw = new FileWriter(FILE_NAME, true);
+             PrintWriter out = new PrintWriter(fw)) {
+
+            out.println(errorMessage);
+        } catch (IOException e){
+            System.err.println("Critical: could not write error to log file.");
         }
     }
 
