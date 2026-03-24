@@ -23,7 +23,6 @@ public class UserDaoDatabase implements UserDao{
             declaration.setInt(4, user.getAge());
 
             declaration.executeUpdate();
-            System.out.println("User added successfully!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

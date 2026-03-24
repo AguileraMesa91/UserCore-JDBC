@@ -4,6 +4,7 @@ import io.github.aguileramesa91.usercore.model.User;
 import io.github.aguileramesa91.usercore.service.UserService;
 import io.github.aguileramesa91.usercore.util.TimeLogger;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -46,6 +47,7 @@ public class Main {
 
                         long startTime = System.currentTimeMillis();
                         userService.registerUser(newUser);
+                        System.out.println("User registered successfully!");
                         TimeLogger.logExecutionTime("AddUsers ", startTime);
                     } catch (RuntimeException e){
                         TimeLogger.logError("AddUser", e.getMessage());
@@ -70,8 +72,14 @@ public class Main {
                     try {
                         System.out.println("--- All users ---");
                         long startTime = System.currentTimeMillis();
-                        userService.getAllUsers().forEach(System.out::println);
+                        List<User> users = userService.getAllUsers();
+                        if (users.isEmpty()){
+                            System.out.println("No users registered yet.");
+                        } else{
+                            users.forEach(System.out::println);
+                        }
                         TimeLogger.logExecutionTime("GetAllUsers", startTime);
+
                     } catch (RuntimeException e){
                         TimeLogger.logError("GetAllUser", e.getMessage());
                         System.err.println("Error: could no fetch the user list. " + e.getMessage());

@@ -40,11 +40,9 @@ public class TimeLogger {
         try (FileWriter fw = new FileWriter(FILE_NAME, true);
              PrintWriter out = new PrintWriter(fw)) {
 
-            out.println(errorMessage);
+            out.println(logMessage);
         } catch (IOException e){
             System.err.println("Critical: could not write error to log file.");
         }
     }
-
-
 }
